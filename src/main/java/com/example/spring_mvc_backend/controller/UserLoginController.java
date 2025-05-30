@@ -27,7 +27,7 @@ public class UserLoginController {
         return loginService.getRecentLogins(userId);
     }
 
-    // ✅ SECURED: Weekly rankings with JWT check
+    //  Weekly rankings with JWT check
     @GetMapping("/weekly-rankings")
     public ResponseEntity<?> getWeeklyRankings(@RequestHeader("Authorization") String authHeader) {
         try {

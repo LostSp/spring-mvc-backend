@@ -13,7 +13,7 @@ public class CommentCreateRequest {
     @Size(min = 1, max = 500, message = "Content must be between 1 and 500 characters")
     private String content;
 
-    // Getters & setters
+
     public Long getPostId() {
         return postId;
     }

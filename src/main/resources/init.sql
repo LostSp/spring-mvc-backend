@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS user_logins (
     user_id VARCHAR(255),
     login_time DATETIME ,
     ip_address VARCHAR(45),
-    FOREIGN KEY (user_id) REFERENCES members(id) ON DELETE SET NULLselctsss
+    FOREIGN KEY (user_id) REFERENCES members(id) ON DELETE SET NULL
 );
 

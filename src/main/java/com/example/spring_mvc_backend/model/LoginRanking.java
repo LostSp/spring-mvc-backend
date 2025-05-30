@@ -1,9 +1,6 @@
 package com.example.spring_mvc_backend.model;
 
 
-
-
-
 public class LoginRanking {
     private String username;
     private int loginCount;

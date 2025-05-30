@@ -16,5 +16,10 @@ public interface CommentMapper {
     int deleteComment(@Param("id") Long id);
     Comment selectCommentById(@Param("id") Long id);
 
+    List<Comment> selectCommentsByPostIdWithLimit(@Param("postId") Long postId, @Param("limit") int limit);
+
+    List<Comment> selectCommentsByPostIdAfterCursor(@Param("postId") Long postId,
+                                                    @Param("cursor") Long cursor,
+                                                    @Param("limit") int limit);
 
 }

@@ -11,7 +11,7 @@ public class CommentResponse {
     private String content;
     private LocalDateTime createdAt;
 
-    // Getters & setters
+
 
     public Long getId() {
         return id;

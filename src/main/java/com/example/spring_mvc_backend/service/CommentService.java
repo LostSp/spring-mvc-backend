@@ -43,6 +43,15 @@ public class CommentService {
         return commentMapper.selectCommentById(commentId);
     }
 
+    public List<Comment> getCommentsByPostIdAfterCursor(Long postId, Long cursor, int limit) {
+        if (cursor == null) {
+            // Get first 'limit' comments for the post
+            return commentMapper.selectCommentsByPostIdWithLimit(postId, limit);
+        } else {
+            // Get next 'limit' comments after the cursor (commentId)
+            return commentMapper.selectCommentsByPostIdAfterCursor(postId, cursor, limit);
+        }
+    }
 
 
 

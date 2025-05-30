@@ -57,27 +57,7 @@ public class PostController {
         }
     }
 
-   /* @GetMapping
-    public ResponseEntity<?> listPosts(@RequestParam(defaultValue = "1") int page) {
-        try {
-            Map<String, Object> result = postService.listPosts(page);
-            return ResponseEntity.ok(result);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching posts");
-        }
-    }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<?> getPostById(@PathVariable Long postId) {
-        try {
-            PostResponse post = postService.getPostDetail(postId);
-            return ResponseEntity.ok(post);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching post details");
-        }
-    }*/
    @GetMapping
    public ResponseEntity<?> listPosts(@RequestParam(defaultValue = "1") int page, HttpServletRequest request) {
        try {

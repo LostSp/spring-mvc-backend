@@ -15,7 +15,7 @@ public class PostCreateRequest {
     @Size(min = 1, max = 1000, message = "Content must be between 1 and 1000 characters")
     private String content;
 
-    // Getters and setters
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

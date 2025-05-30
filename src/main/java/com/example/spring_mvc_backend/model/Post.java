@@ -12,7 +12,7 @@ public class Post {
     private String username; // For response convenience
     private LocalDateTime createdAt;
 
-    // For database, you might have userId instead of username to link user
+
     private String userId;
 
     public Long getId() {

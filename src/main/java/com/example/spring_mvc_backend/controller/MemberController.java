@@ -50,7 +50,7 @@ public class MemberController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req, HttpServletRequest request) {
         try {
             String token = memberService.login(req.getId(), req.getPassword());
-            // ✅ Record login info (user ID and IP)
+            //  Record login info (user ID and IP)
             String ipAddress = request.getRemoteAddr();
             userLoginService.recordLogin(req.getId(), ipAddress);
 

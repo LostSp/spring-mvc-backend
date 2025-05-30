@@ -21,11 +21,7 @@ public class SignupRequest {
     // For Korean characters, Unicode range check could be added but skipping for simplicity
     private String username;
 
-    // getters and setters
 
-
-
-    // Default constructor
 
 
     public String getId() {

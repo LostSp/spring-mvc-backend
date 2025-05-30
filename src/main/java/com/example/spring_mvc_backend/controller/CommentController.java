@@ -2,6 +2,7 @@ package com.example.spring_mvc_backend.controller;
 
 import com.example.spring_mvc_backend.dto.CommentCreateRequest;
 
+import com.example.spring_mvc_backend.dto.CommentPageResponse;
 import com.example.spring_mvc_backend.model.Comment;
 import com.example.spring_mvc_backend.model.Member;
 import com.example.spring_mvc_backend.service.CommentService;
@@ -57,18 +58,40 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating comment: " + e.getMessage());
         }
     }
-
     @GetMapping
+    public ResponseEntity<?> listComments(
+            @RequestParam Long postId,
+            @RequestParam(required = false) Long cursor // cursor is commentId of last comment fetched
+    ) {
+        try {
+            int pageSize = 20; // or whatever limit you want
+
+            List<Comment> comments = commentService.getCommentsByPostIdAfterCursor(postId, cursor, pageSize);
+
+            // Determine next cursor (ID of last comment in the list)
+            Long nextCursor = null;
+            if (!comments.isEmpty()) {
+                nextCursor = comments.get(comments.size() - 1).getId();
+            }
+
+            // Build response object with comments + nextCursor
+            return ResponseEntity.ok(new CommentPageResponse(comments, nextCursor));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching comments");
+        }
+    }
+
+   /* @GetMapping
     public ResponseEntity<?> listComments(@RequestParam Long postId) {
         try {
-            List<Comment> comments = commentService.getCommentsByPostId(postId);  // use correct method name
-            // If you want to map Comment to CommentResponse, do that here
+            List<Comment> comments = commentService.getCommentsByPostId(postId);
+            //  map Comment to CommentResponse,
             // For now, returning List<Comment> directly
             return ResponseEntity.ok(comments);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching comments");
         }
-    }
+    }*/
 
 
     @DeleteMapping("/{commentId}")
@@ -87,7 +110,7 @@ public class CommentController {
             String userId = jwtUtil.getUserIdFromToken(token);
 
             // Optional: check if comment belongs to user before deleting
-            // You may need to add a method in CommentService or Mapper to get comment by id
+            //may need to add a method in CommentService or Mapper to get comment by id
             // and verify comment.getUserId().equals(userId) for authorization
             Comment comment = commentService.getCommentById(commentId);
             if (comment == null) {
