@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS springappdb;
 
 USE springappdb;
 
-CREATE TABLE members (
+CREATE TABLE IF NOT EXISTS members (
     id VARCHAR(255) PRIMARY KEY,       -- corresponds to email, used as ID
     password VARCHAR(255) NOT NULL,    -- hashed password
     username VARCHAR(100) NOT NULL,    -- Korean username
@@ -12,7 +12,7 @@ CREATE TABLE members (
 );
 
 
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
@@ -22,13 +22,22 @@ CREATE TABLE posts (
     FOREIGN KEY (user_id) REFERENCES members(id)
 );
 
-CREATE TABLE comments (
+CREATE TABLE IF NOT EXISTS comments (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     post_id BIGINT NOT NULL,
     user_id VARCHAR(255) NOT NULL,
+    username VARCHAR(100),
     content VARCHAR(500) NOT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES members(id) ON DELETE CASCADE
+    created_at DATETIME,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ,
+    FOREIGN KEY (user_id) REFERENCES members(id)
+);
+
+CREATE TABLE IF NOT EXISTS user_logins (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255),
+    login_time DATETIME ,
+    ip_address VARCHAR(45),
+    FOREIGN KEY (user_id) REFERENCES members(id) ON DELETE SET NULLselctsss
 );
 

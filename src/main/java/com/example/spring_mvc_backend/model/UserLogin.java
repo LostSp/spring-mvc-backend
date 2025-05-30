@@ -1,16 +1,21 @@
 package com.example.spring_mvc_backend.model;
 
-import lombok.Data;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 
 import java.time.LocalDateTime;
 
-public class Comment {
+
+public class UserLogin {
     private Long id;
-    private String content;
     private String userId;
     private String username;
-    private Long postId;
-    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime loginTime;
+    private String ipAddress;
 
     public Long getId() {
         return id;
@@ -18,14 +23,6 @@ public class Comment {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getUserId() {
@@ -44,19 +41,20 @@ public class Comment {
         this.username = username;
     }
 
-    public Long getPostId() {
-        return postId;
+    public LocalDateTime getLoginTime() {
+        return loginTime;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setLoginTime(LocalDateTime loginTime) {
+        this.loginTime = loginTime;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 }
+

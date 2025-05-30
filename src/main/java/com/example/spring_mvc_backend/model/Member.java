@@ -12,6 +12,7 @@ public class Member {
     private String username;      // Korean username
     private LocalDateTime registrationTime;
 
+
     public String getId() {
         return id;
     }

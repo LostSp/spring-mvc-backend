@@ -106,5 +106,8 @@ public class MemberService {
 
         memberMapper.updateMember(member);
     }
+    public Member findById(String id) {
+        return memberMapper.selectMemberById(id);
+    }
 
 }

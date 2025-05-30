@@ -3,36 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.mapper.CommentMapper">
+<mapper namespace="com.example.spring_mvc_backend.mapper.CommentMapper">
 
-    <!-- Insert new comment -->
-    <insert id="insertComment" parameterType="com.example.demo.model.Comment" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO comments (post_id, user_id, content, username, created_at)
-        VALUES (#{postId}, #{userId}, #{content}, #{username}, #{createdAt})
+    <insert id="insertComment" parameterType="com.example.spring_mvc_backend.model.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comments (post_id, user_id, username, content, created_at)
+        VALUES (#{postId}, #{userId}, #{username}, #{content}, #{createdAt})
     </insert>
 
-    <!-- Select comments by postId with cursor-based pagination -->
-    <select id="selectCommentsByPostId" parameterType="map" resultType="com.example.demo.model.Comment">
-        SELECT id, post_id, user_id, content, username, created_at
+    <select id="selectCommentsByPostId" resultType="com.example.spring_mvc_backend.model.Comment" parameterType="long">
+        SELECT id, post_id, user_id, username, content, created_at
         FROM comments
         WHERE post_id = #{postId}
-        <if test="cursor != null">
-            AND id &lt; #{cursor}
-        </if>
-        ORDER BY id DESC
-        LIMIT #{limit}
+        ORDER BY created_at DESC
     </select>
 
-    <!-- Delete comment by id -->
     <delete id="deleteComment" parameterType="long">
         DELETE FROM comments WHERE id = #{id}
     </delete>
-
-    <!-- Select comment by id -->
-    <select id="selectCommentById" parameterType="long" resultType="com.example.demo.model.Comment">
-        SELECT id, post_id, user_id, content, username, created_at
+    <select id="selectCommentById" resultType="com.example.spring_mvc_backend.model.Comment" parameterType="long">
+        SELECT id, post_id, user_id, username, content, created_at
         FROM comments
         WHERE id = #{id}
     </select>
+
 
 </mapper>

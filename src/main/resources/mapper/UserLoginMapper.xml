@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring_mvc_backend.mapper.UserLoginMapper">
+
+    <!-- Insert login record -->
+    <insert id="insertLoginRecord" parameterType="com.example.spring_mvc_backend.model.UserLogin">
+        INSERT INTO user_logins (user_id, login_time, ip_address)
+        VALUES (#{userId}, #{loginTime}, #{ipAddress})
+    </insert>
+
+    <!-- Select last 30 login records with user name (nullable) -->
+<!--    <select id="selectRecentLoginsByUserId" resultType="com.example.spring_mvc_backend.model.UserLogin" parameterType="string">-->
+<!--        SELECT l.id, l.user_id, m.username, l.login_time, l.ip_address-->
+<!--        FROM user_logins l-->
+<!--        LEFT JOIN members m ON l.user_id = m.id-->
+<!--        WHERE l.user_id = #{userId}-->
+<!--        ORDER BY l.login_time DESC-->
+<!--        LIMIT 30-->
+<!--    </select>-->
+    <select id="selectRecentLoginsByUserId"
+            resultType="com.example.spring_mvc_backend.model.UserLogin"
+            parameterType="string">
+        SELECT
+        l.id,
+        l.user_id AS userId,
+        m.username,
+        l.login_time AS loginTime,
+        l.ip_address AS ipAddress
+        FROM user_logins l
+        LEFT JOIN members m ON l.user_id = m.id
+        WHERE l.user_id = #{userId}
+        ORDER BY l.login_time DESC
+        LIMIT 30
+    </select>
+
+
+
+    <select id="selectWeeklyLoginRankings" resultType="map">
+        WITH weekly_logins AS (
+        SELECT
+        m.username,
+        COUNT(*) AS login_count
+        FROM user_logins l
+        LEFT JOIN members m ON l.user_id = m.id
+        WHERE l.login_time &gt;= STR_TO_DATE(DATE_FORMAT(CURRENT_DATE - INTERVAL WEEKDAY(CURRENT_DATE) DAY, '%Y-%m-%d 00:00:00'), '%Y-%m-%d %H:%i:%s')
+        AND l.login_time &lt;= STR_TO_DATE(DATE_FORMAT(CURRENT_DATE + INTERVAL (6 - WEEKDAY(CURRENT_DATE)) DAY, '%Y-%m-%d 23:59:59'), '%Y-%m-%d %H:%i:%s')
+        GROUP BY m.username
+        )
+        SELECT
+        username,
+        login_count,
+        RANK() OVER (ORDER BY login_count DESC) AS `rank`
+        FROM weekly_logins
+        ORDER BY `rank`
+        LIMIT 20
+    </select>
+
+</mapper>

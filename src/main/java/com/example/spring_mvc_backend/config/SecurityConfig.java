@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                         .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/signup","/api/login","api/member","api/posts","api/posts/{postId}","api/test").permitAll()
+                                .requestMatchers("/api/signup","/api/login","api/member","api/posts","api/posts/{postId}","api/test","api/comments","api/comments/{commentId}","/api/login-records/{userId}","/api/login-records/weekly-rankings").permitAll()
                                 .requestMatchers("/error").permitAll()      // allow error endpoint without auth
                                 .anyRequest().authenticated()
 

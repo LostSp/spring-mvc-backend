@@ -13,4 +13,6 @@ public interface MemberMapper {
 
     Member selectMemberById(@Param("id") String id);
     Member findByEmail(String email); //
+
+
 }

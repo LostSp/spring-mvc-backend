@@ -1,7 +1,7 @@
 package com.example.spring_mvc_backend.model;
 
 
-import lombok.Data;
+
 
 import java.time.LocalDateTime;
 

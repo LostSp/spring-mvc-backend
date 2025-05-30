@@ -3,6 +3,8 @@ package com.example.spring_mvc_backend.controller;
 
 
 import com.example.spring_mvc_backend.dto.*;
+import com.example.spring_mvc_backend.service.UserLoginService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,12 @@ public class MemberController {
 
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
+    private final UserLoginService userLoginService;
 
-    // Update the constructor to inject JwtUtil
-    public MemberController(MemberService memberService, JwtUtil jwtUtil) {
+    public MemberController(MemberService memberService, JwtUtil jwtUtil, UserLoginService userLoginService) {
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
+        this.userLoginService = userLoginService;
     }
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest req) {
@@ -44,9 +47,13 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req, HttpServletRequest request) {
         try {
             String token = memberService.login(req.getId(), req.getPassword());
+            // ✅ Record login info (user ID and IP)
+            String ipAddress = request.getRemoteAddr();
+            userLoginService.recordLogin(req.getId(), ipAddress);
+
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));

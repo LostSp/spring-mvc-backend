@@ -1,10 +1,7 @@
 package com.example.spring_mvc_backend.service;
 
-
-
 import com.example.spring_mvc_backend.mapper.CommentMapper;
 import com.example.spring_mvc_backend.model.Comment;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,39 +12,38 @@ public class CommentService {
 
     private final CommentMapper commentMapper;
 
-    @Autowired
     public CommentService(CommentMapper commentMapper) {
         this.commentMapper = commentMapper;
     }
 
-    public Comment createComment(Long postId, String userId, String userName, String content) {
+    public Comment createComment(Long postId, String userId, String username, String content) {
         Comment comment = new Comment();
         comment.setPostId(postId);
         comment.setUserId(userId);
-        comment.setUserName(userName);
+        comment.setUsername(username);
         comment.setContent(content);
         comment.setCreatedAt(LocalDateTime.now());
 
-        int rows = commentMapper.insertComment(comment);
-        if (rows != 1) {
-            throw new RuntimeException("Failed to insert comment");
-        }
+        commentMapper.insertComment(comment);
         return comment;
     }
 
-    public List<Comment> getComments(Long postId, Long cursor, int limit) {
-        return commentMapper.selectCommentsByPostId(postId, cursor, limit);
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return commentMapper.selectCommentsByPostId(postId);
     }
 
     public void deleteComment(Long commentId) {
-        int rows = commentMapper.deleteComment(commentId);
-        if (rows != 1) {
-            throw new RuntimeException("Failed to delete comment or comment not found");
+        int deleted = commentMapper.deleteComment(commentId);
+        if (deleted == 0) {
+            throw new IllegalArgumentException("Comment not found or could not be deleted");
         }
     }
 
-    public Comment getCommentById(Long id) {
-        return commentMapper.selectCommentById(id);
+    public Comment getCommentById(Long commentId) {
+        return commentMapper.selectCommentById(commentId);
     }
-}
 
+
+
+
+}
