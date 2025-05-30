@@ -1,0 +1,92 @@
+
+#version: '3.8'
+#
+#services:
+#  db:
+#    image: mysql:8
+#    container_name: mysql-container
+#    environment:
+#      MYSQL_DATABASE: springappdb
+#      MYSQL_USER: springuser
+#      MYSQL_PASSWORD: springpass123
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#
+#  app:
+#    build: .
+#    container_name: springboot-app
+#    ports:
+#      - "3001:3001"
+#    depends_on:
+#      - db
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/springappdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: springuser
+#      SPRING_DATASOURCE_PASSWORD: springpass123
+
+
+#version: '3.8'
+#
+#services:
+#  db:
+#    image: mysql:8
+#    container_name: mysql-container
+#    environment:
+#      MYSQL_DATABASE: springappdb
+#      MYSQL_USER: springuser
+#      MYSQL_PASSWORD: springpass123
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#
+#  app:
+#    build: .
+#    container_name: springboot-app
+#    ports:
+#      - "3001:3001"
+#    depends_on:
+#      - db
+#    volumes:
+#      - .:/app
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/springappdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: springuser
+#      SPRING_DATASOURCE_PASSWORD: springpass123
+
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: springappdb
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springpass123
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .
+    container_name: springboot-app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ./mvnw spring-boot:run
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/springappdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: springuser
+      SPRING_DATASOURCE_PASSWORD: springpass123
+

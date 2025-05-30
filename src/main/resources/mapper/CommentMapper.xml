@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.CommentMapper">
+
+    <!-- Insert new comment -->
+    <insert id="insertComment" parameterType="com.example.demo.model.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comments (post_id, user_id, content, username, created_at)
+        VALUES (#{postId}, #{userId}, #{content}, #{username}, #{createdAt})
+    </insert>
+
+    <!-- Select comments by postId with cursor-based pagination -->
+    <select id="selectCommentsByPostId" parameterType="map" resultType="com.example.demo.model.Comment">
+        SELECT id, post_id, user_id, content, username, created_at
+        FROM comments
+        WHERE post_id = #{postId}
+        <if test="cursor != null">
+            AND id &lt; #{cursor}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- Delete comment by id -->
+    <delete id="deleteComment" parameterType="long">
+        DELETE FROM comments WHERE id = #{id}
+    </delete>
+
+    <!-- Select comment by id -->
+    <select id="selectCommentById" parameterType="long" resultType="com.example.demo.model.Comment">
+        SELECT id, post_id, user_id, content, username, created_at
+        FROM comments
+        WHERE id = #{id}
+    </select>
+
+</mapper>

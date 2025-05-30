@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring_mvc_backend.mapper.MemberMapper">
+
+    <select id="selectMemberById" resultType="com.example.spring_mvc_backend.model.Member" parameterType="String">
+        SELECT * FROM members WHERE id = #{id}
+    </select>
+
+    <insert id="insertMember" parameterType="com.example.spring_mvc_backend.model.Member">
+        INSERT INTO members (id, password, username, created_at)
+        VALUES (#{id}, #{password}, #{username}, #{registrationTime})
+    </insert>
+    <update id="updateMember" parameterType="com.example.spring_mvc_backend.model.Member">
+        UPDATE members
+        <set>
+            <if test="password != null">password = #{password},</if>
+            <if test="username != null">username = #{username},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>
+
